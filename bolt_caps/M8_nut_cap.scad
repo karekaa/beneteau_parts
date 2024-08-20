@@ -1,4 +1,4 @@
-// Program:    M8_nut_cap.scad
+// Program:  M8_nut_cap.scad
 //
 // Function: OpenSCAD program to define a plastic cap for e.g.
 //           M8, M10 and M13 bolt nuts for 3D print.
@@ -13,17 +13,17 @@ $fn = $preview ? 32 : 90;
 
 nut_size   = 8;              // Bolt size in millimeter
 
-count      = 6;              // Number of caps
+count      = 3;              // Number of caps
 distance   = 1.32;           // Distance factor between caps
 cup_factor = 1.50;           // Higher value: lower the cup dome
 thickness  = 0.90;           // Dome thickness factor. Less is thinner.
 dome_hight = 10.5;           // High: 6.5;  Low: 10.5
 nut_hight  = nut_size/2.59;  // Hight for the nut/bolt head
-friction   = 1.120;          // Friction factor. Higher: less friction
+friction   = 1.109;          //120; Friction factor. Higher: less friction
 cyl_thick  = 1.28;           // Cylinder thickness: 1.28 > 1.30
 nut_s = nut_size * friction; // Will give right friction
 cup_r = nut_size/cup_factor; // cup/dome radius
-
+extra = 1;                   // Extra hight on the cup to cover long bolts
 
 // hexagon carving to fit on a nut or bolt head
 module m_nut(size, height=nut_hight){
@@ -46,7 +46,7 @@ for (i = [1:1:count]) {
     }
     
     // Make the spheric half dome cover:
-    translate([0,0,nut_size/dome_hight]) { 
+    translate([0,0,nut_size/dome_hight+extra]) { 
         difference () {
             sphere(cup_r);
             sphere(cup_r*thickness);
@@ -55,6 +55,12 @@ for (i = [1:1:count]) {
             translate([0,0,-cup_r]) {
                cube(cup_r*2, center=true);
             }
+        }
+    }
+    translate([0,0,nut_size/dome_hight]) { 
+        difference() {
+            cylinder(h=extra, d=cup_r*2);
+            cylinder(h=extra, d=cup_r*2*thickness);
         }
     }
   }

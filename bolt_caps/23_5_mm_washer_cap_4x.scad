@@ -15,7 +15,7 @@ count      = 4;      // Number of caps to 3D-print
 hole_diam  = 10;     // Nut size hole
 wash_size  = 23.5;   // Washer diameter in millimeter
 distance   = 1.50;   // Distance factor between caps
-wash_hight = 1.4;   // Hight for the wall around washer
+wash_hight = 2.0;    // Hight for the wall around washer
 cyl_thick  = 1.02;   // Cylinder wall thickness: 1.01 > 1.03
 size  = wash_size + 1.5;
 washer_thick = 0.4;  // Thickness of the whasher cap
@@ -31,13 +31,10 @@ module washer(size, height=wash_hight){
 for (i = [1:1:count]) {
   translate([i*distance*wash_size,0,0]) {   
     difference() {
-      //union() {
         difference(){
             cylinder(h=wash_hight, d=size*cyl_thick);
             washer(size, wash_hight+5);
         }
-        //%cylinder(h=wash_hight-2.5, d=size*cyl_thick);
-      //}
       cylinder(h=wash_hight+3, d=hole_diam*nut_friction, $fn=6);
     }
   }
