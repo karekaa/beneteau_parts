@@ -26,7 +26,8 @@ To navigate our codebase with confidence, see [the introduction to working in th
 ~~Check to see what [types of contributions](/contributing/types-of-contributions.md) we accept before making changes. Some of them don't even require writing a single line of code :sparkles:.~~
 (... not yet created)
 
-# STOP READING HERE - UNDER CONSTRUCTION BELOW
+# STOP READING HERE 
+##- UNDER CONSTRUCTION BELOW ...
 ### Issues
 
 #### Create a new issue
