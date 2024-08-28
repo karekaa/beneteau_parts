@@ -27,7 +27,8 @@ To navigate our codebase with confidence, see [the introduction to working in th
 (... not yet created)
 
 # STOP READING HERE 
-##- UNDER CONSTRUCTION BELOW ...
+## - UNDER CONSTRUCTION BELOW ...
+***********************************************************************************
 ### Issues
 
 #### Create a new issue
