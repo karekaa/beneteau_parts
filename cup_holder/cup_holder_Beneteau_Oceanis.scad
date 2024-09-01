@@ -15,9 +15,9 @@ $fn = $preview ? 90 : 190;
 mink_dia =   3; // Minkowski diameter for rounding edges
 f_thick  =   3; // The bottom fundation to glue or screw in place
 f_size   = 100; // The fundation width and length (square)
-f_angle  =  12; // Degree tilt, which need to be straighten up
+f_angle  =  14; // Degree tilt, which need to be straighten up
 cup_d    =  85; // max cup diameter
-cup_h    =  50; // hight of the cup holder
+cup_h    = 100; // hight of the cup holder
 handle_w =  15; // The cup handle width
 handle_h =  24; // handle opening hight
 
