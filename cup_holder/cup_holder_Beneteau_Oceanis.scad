@@ -12,14 +12,16 @@
 $fn = $preview ? 90 : 190; 
 
 // Settings: ************************************************************
-mink_dia =   3; // Minkowski diameter for rounding edges
-f_thick  =   3; // The bottom fundation to glue or screw in place
-f_size   = 100; // The fundation width and length (square)
-f_angle  =  14; // Degree tilt, which need to be straighten up
-cup_d    =  85; // max cup diameter
-cup_h    = 100; // hight of the cup holder
-handle_w =  15; // The cup handle width
-handle_h =  24; // handle opening hight
+mink_dia =   3;   // Minkowski diameter for rounding edges
+f_thick  =   1.5; // The bottom fundation to glue in place
+h_thick  =   3;   // cup holder thickness
+f_size   = 100;   // The fundation width and length (square)
+f_angle  =  12;   // Degree tilt, which need to be straighten up
+cup_d    =  85;   // max cup diameter
+cup_h    =  90;   // hight of the cup holder
+stand_d  = cup_d - 20; // Diameter for the «cup stand» inside the cup holder
+handle_w =  15;   // The cup handle width
+handle_h =  24;   // handle opening hight
 
 minkowski() {
 difference() {
@@ -27,25 +29,25 @@ difference() {
         // The floor inside the cup holder:
         difference([]) {
            rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -20]) 
-           cylinder (cup_h, d=cup_d+f_thick);
-           translate([0,0,2]) cube([f_size,f_size,70]);
-           translate([0,0,-70]) cube([f_size,f_size,70]);
+           cylinder (cup_h, d=cup_d+h_thick);
+           translate([-cup_h/2,-cup_h/2,f_thick]) cube([f_size+cup_h,f_size+cup_h,f_size+cup_h]);
+           translate([0,0,-cup_h]) cube([f_size,f_size,cup_h]);
         }
         
         // The tilted hollow cylinder for holding the cup:
         rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -20]) 
         difference () {
-          cylinder (cup_h, d=cup_d+f_thick);
+          cylinder (cup_h, d=cup_d+h_thick);
           cylinder (cup_h+1, d=cup_d);
         }
         // Inner horizontal stand for the cup:
-        rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -(cup_h+4)])
-          cylinder (cup_h, d=cup_d-20);
+        rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -stand_d*tan(f_angle)-1])
+          cylinder (stand_d*tan(f_angle), d=stand_d);
     }
     
 
     // Remove a slice for giving room for handle on cups:
-    // rotate([f_angle, 0, 10]) translate([19.4, f_size/2+handle_w/2, f_thick]) 
+    // rotate([f_angle, 0, 10]) translate([19.4, f_size/2+handle_w/2, h_thick]) 
     // cube ([handle_w, handle_w, cup_h]);
         // TODO: Bytt cube() over, med en åpning med avrundede kanter
         *difference() {
@@ -58,15 +60,15 @@ difference() {
 
 
         // Shape to differ, shape round corners on the cup handle opening:
-        rotate([f_angle, 0,12]) translate([19.4, f_size/2+handle_w/2, 9]) 
+        rotate([f_angle, 0,0]) translate([f_size-cup_d-handle_w, f_size/2+handle_w/2, 9]) 
         difference() {
             union() {
                 // cube:
                 //translate([-20,0,0]) 
-                cube([handle_w, handle_w, handle_h]);
+                cube([handle_w, handle_w, cup_h]);
                 // 90 degree square extrude on top:
                 //translate([-24,0,32]) cube([10,6,6]);
-                translate([-2, 0, handle_h]) cube([8,6,6]);
+                translate([-2, 0, cup_h-handle_h-6]) cube([8,6,6]);
                 //union() {
                 //  rotate([90, 0, 0]) rotate_extrude(angle=90, convexity=10) square(6,6);
                 //}
