@@ -1,61 +1,72 @@
-// Program:    hex_nut_cap.scad
+// Program:  M10_nut_cap.scad
 //
-// Function: Program to define a plastic cap for
-//           M6, M10 and M13 bolt nuts for 3D print.
+// Function: OpenSCAD program to define a plastic cap for e.g.
+//           M8, M10 and M13 bolt nuts for 3D print.
 //
 // Author:   Kjell Arne Rekaa (kjell.arne.rekaa@gmail.com)
-// 
+//
 // Date:     2024-05-13
 // ======================================================================
 
-// Speed up rendering - low resolution only for preview: 
-$fn = $preview ? 32 : 90; 
+// Speed up rendering - low resolution only for preview:
+$fn = $preview ? 32 : 90;
 
-nut_size   = 10;            // Bolt size in millimeter
+nut_size   = 10;              // Bolt size in millimeter
 
-count      = 10;             // Number of caps
-distance   = 1.29;          // Distance factor between caps
-cup_factor = 1.50;          // Factor for reducing the cup dome
-thickness  = 0.90;          // Dome thickness factor. Less is thinner.
-dome_hight = 10.5;          // High: 6.5;  Low: 10.5
-nut_hight  = nut_size/2.59; // Hight for the nut/bolt head
-friction   = 1.125;         // Added room for right friction
-
+count      = 1;              // Number of caps
+distance   = 1.32;           // Distance factor between caps
+cup_factor = 1.60;           // Higher value: lower the cup dome
+thickness  = 0.8;            // Dome thickness factor. 0.9 < 0.5 Less is thicker.
+dome_hight = 10.5;           // High: 6.5;  Low: 10.5
+nut_hight  = nut_size/2.79;  // Hight for the nut/bolt head
+friction   = 1.109;          //120; Friction factor. Higher: less friction
+cyl_thick  = 1.28;           // Cylinder thickness: 1.28 > 1.30
 nut_s = nut_size * friction; // Will give right friction
 cup_r = nut_size/cup_factor; // cup/dome radius
-
+extra_h    = 8;              // Extra hight of the cup, to cover long bolts
 
 // hexagon carving to fit on a nut or bolt head
 module m_nut(size, height=nut_hight){
     cylinder(h=height, d=size/cos(180/6),center=true, $fn=6);
 }
 
-
+// Produce "count" number of equal caps:
 for (i = [1:1:count]) {
-    translate([i*distance*nut_s,0,0]) { 
-  
-    // minkowski-rounding of the edges:
-    minkowski() {
-        difference(){
-            cylinder(h=nut_hight, d=nut_size*1.3, 
-            center=true);
-            m_nut(nut_s, nut_hight);
+  translate([i*distance*nut_s,0,1.5]) {
+     difference() {
+      union() {
+        // minkowski-rounding of the edges:
+        minkowski() {
+            difference(){
+                cylinder(h=nut_hight, d=nut_size*cyl_thick,
+                center=true);
+                m_nut(nut_s, nut_hight);
+            }
+           // minkowski rounding factor:
+           sphere (nut_size/20);
         }
-       // minkowski rounding factor:
-       sphere (nut_size/20);
-    }
-    
-    // Make the spheric half dome cover:
-    translate([0,0,nut_size/dome_hight]) { 
-        difference () {
-            sphere(cup_r);
-            sphere(cup_r*thickness);
-            
-            //Remove bottom half of the «marble»:
-            translate([0,0,-cup_r]) {
-               cube(cup_r*2, center=true);
+
+        // Make the spheric half dome cover:
+        translate([0,0,nut_size/dome_hight+extra_h]) {
+            difference () {
+                sphere(cup_r);
+                sphere(cup_r*thickness);
+
+                //Remove bottom half of the «marble»:
+                translate([0,0,-cup_r]) {
+                   cube(cup_r*2, center=true);
+                }
+            }
+        }
+        // Add extra length (covering longer bolts):
+        translate([0,0,nut_size/dome_hight]) {
+            difference() {
+                cylinder(h=extra_h, d=cup_r*2);
+                cylinder(h=extra_h, d=cup_r*2*thickness);
             }
         }
     }
-}
+    translate([-nut_size*distance/2-0.5, -nut_size*distance/2-0.5, -nut_size*1.16]) cube([nut_size*distance+1, nut_size*distance+1, nut_size]);
+   }
+  }
 }

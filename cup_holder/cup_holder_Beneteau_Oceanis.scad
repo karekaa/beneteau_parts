@@ -5,11 +5,11 @@
 //           the instrument pole in the cockpit of a sailboat.
 //
 // Author:   Kjell Arne Rekaa (kjell.arne.rekaa@gmail.com)
-// 
+//
 // Date:     2024-07-23
 // ======================================================================
-// Speed up rendering - low resolution only for preview: 
-$fn = $preview ? 90 : 190; 
+// Speed up rendering - low resolution only for preview:
+$fn = $preview ? 90 : 190;
 
 // Settings: ************************************************************
 mink_dia =   3;   // Minkowski diameter for rounding edges
@@ -28,14 +28,14 @@ difference() {
     union() {
         // The floor inside the cup holder:
         difference([]) {
-           rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -20]) 
+           rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -20])
            cylinder (cup_h, d=cup_d+h_thick);
            translate([-cup_h/2,-cup_h/2,f_thick]) cube([f_size+cup_h,f_size+cup_h,f_size+cup_h]);
            translate([0,0,-cup_h]) cube([f_size,f_size,cup_h]);
         }
-        
+
         // The tilted hollow cylinder for holding the cup:
-        rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -20]) 
+        rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -20])
         difference () {
           cylinder (cup_h, d=cup_d+h_thick);
           cylinder (cup_h+1, d=cup_d);
@@ -44,10 +44,10 @@ difference() {
         rotate([f_angle,0,0]) translate([f_size/2, f_size/2, -stand_d*tan(f_angle)-1])
           cylinder (stand_d*tan(f_angle), d=stand_d);
     }
-    
+
 
     // Remove a slice for giving room for handle on cups:
-    // rotate([f_angle, 0, 10]) translate([19.4, f_size/2+handle_w/2, h_thick]) 
+    // rotate([f_angle, 0, 10]) translate([19.4, f_size/2+handle_w/2, h_thick])
     // cube ([handle_w, handle_w, cup_h]);
         // TODO: Bytt cube() over, med en åpning med avrundede kanter
         *difference() {
@@ -60,11 +60,11 @@ difference() {
 
 
         // Shape to differ, shape round corners on the cup handle opening:
-        rotate([f_angle, 0,0]) translate([f_size-cup_d-handle_w, f_size/2+handle_w/2, 9]) 
+        rotate([f_angle, 0,0]) translate([f_size-cup_d-handle_w, f_size/2+handle_w/2, 9])
         difference() {
             union() {
                 // cube:
-                //translate([-20,0,0]) 
+                //translate([-20,0,0])
                 cube([handle_w, handle_w, cup_h]);
                 // 90 degree square extrude on top:
                 //translate([-24,0,32]) cube([10,6,6]);
@@ -73,25 +73,25 @@ difference() {
                 //  rotate([90, 0, 0]) rotate_extrude(angle=90, convexity=10) square(6,6);
                 //}
             }
-        
-            rotate([0,0,90]) 
+
+            rotate([0,0,90])
             union() {
                 // Vertical cylinder:
                 translate([1,3,0])
                 cylinder (handle_h-2, d=4);
                 // 90 degree bend on top:
                 translate([-3,3,handle_h-4]) union() {
-                    rotate([90, 0, 0]) rotate_extrude(angle=90, convexity=10) 
-                    translate([4, 0, 0]) circle(r=2); 
+                    rotate([90, 0, 0]) rotate_extrude(angle=90, convexity=10)
+                    translate([4, 0, 0]) circle(r=2);
                 }
             }
         }
 
 
-    // Remove the leftover of the tilted cylinder below the fundament: 
+    // Remove the leftover of the tilted cylinder below the fundament:
     translate ([0,0,-60]) cube([f_size, f_size, 60]);
-    
+
     // Make hole for rain water to get out:
-    translate([cup_h,f_size,3]) rotate([90,0,0]) cylinder(20,3);
+    translate([cup_h/2,f_size,3]) rotate([90,0,0]) cylinder(20,3);
 }
 }
