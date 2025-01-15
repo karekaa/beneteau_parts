@@ -11,7 +11,7 @@
 // Speed up rendering - low resolution only for preview:
 $fn = $preview ? 32 : 90;
 
-nut_size   = 13;              // Bolt size in millimeter
+nut_size   = 13;             // Bolt size in millimeter
 
 count      = 1;              // Number of caps
 distance   = 1.32;           // Distance factor between caps
@@ -19,7 +19,7 @@ cup_factor = 1.50;           // Higher value: lower the cup dome
 thickness  = 0.90;           // Dome thickness factor. Less is thinner.
 dome_hight = 10.5;           // High: 6.5;  Low: 10.5
 nut_hight  = nut_size/2.59;  // Hight for the nut/bolt head
-friction   = 1.109;          //120; Friction factor. Higher: less friction
+friction   = 1.109;          // 120; Friction factor. Higher: less friction
 cyl_thick  = 1.28;           // Cylinder thickness: 1.28 > 1.30
 nut_s = nut_size * friction; // Will give right friction
 cup_r = nut_size/cup_factor; // cup/dome radius
